@@ -12,8 +12,8 @@ using ShiftsLogger.API.Data;
 namespace ShiftsLogger.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250824001446_initial")]
-    partial class initial
+    [Migration("20251202084059_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,7 +39,7 @@ namespace ShiftsLogger.API.Migrations
                     b.Property<DateTimeOffset>("StartTime")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int>("WorkerId")
+                    b.Property<int?>("WorkerId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -71,8 +71,7 @@ namespace ShiftsLogger.API.Migrations
                     b.HasOne("ShiftsLogger.API.Models.Worker", "Worker")
                         .WithMany("Shifts")
                         .HasForeignKey("WorkerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Worker");
                 });

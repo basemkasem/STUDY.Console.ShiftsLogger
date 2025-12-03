@@ -1,65 +1,121 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShiftsLogger.API.Data;
 using ShiftsLogger.API.Models;
+using ShiftsLogger.API.Models.DTOs.shift;
+using ShiftsLogger.API.Models.DTOs.Worker;
 
 namespace ShiftsLogger.API.Services;
 
 public interface IWorkerService
 {
-    Task<Worker> AddWorkerAsync(Worker worker);
-    Task<Worker?> GetWorkerByIdAsync(int id);
-    Task<Worker?> UpdateWorkerAsync(int id, Worker worker);
+    Task<WorkerDto?> AddWorkerAsync(string workerName);
+    Task<WorkerDto?> GetWorkerByIdAsync(int id);
+    Task<WorkerDto?> UpdateWorkerAsync(int id, string workerName);
     Task<bool> DeleteWorkerAsync(int id);
-    Task<List<Worker>?> GetAllWorkersAsync();
+    Task<List<WorkerDto>?> GetAllWorkersAsync();
+    Task<WorkerWithShiftsDto?> GetWorkerWithShiftsAsync(int id);
 }
 public class WorkerService : IWorkerService
 {
     private readonly AppDbContext _context;
-    public WorkerService(AppDbContext context)
+    private readonly IShiftService _shiftService;
+    public WorkerService(AppDbContext context, IShiftService shiftService)
     {
         _context = context;
+        _shiftService = shiftService;
     }
-    public async Task<Worker> AddWorkerAsync(Worker worker)
+    public async Task<WorkerDto?> AddWorkerAsync(string workerName)
     {
+        if (string.IsNullOrWhiteSpace(workerName))
+        {
+            return null;
+        }
+
+        Worker worker = new()
+        {
+            Name = workerName
+        };
         _context.Workers.Add(worker);
         await _context.SaveChangesAsync();
-        return worker;
+        WorkerDto workerDto = new()
+        {
+            Id = worker.Id,
+            Name = worker.Name
+        };
+        return workerDto;
     }
 
     public async Task<bool> DeleteWorkerAsync(int id)
     {
-        var worker = await GetWorkerByIdAsync(id);
+        var worker = await _context.Workers.FindAsync(id);
         if (worker is null)
         {
             return false;
         }
-
+        //TODO: Set OnDelete to SetNull in DbContext
         _context.Workers.Remove(worker);
         await _context.SaveChangesAsync();
 
         return true;
     }
 
-    public async Task<List<Worker>?> GetAllWorkersAsync()
+    public async Task<List<WorkerDto>?> GetAllWorkersAsync()
     {
-        return await _context.Workers.Include(w => w.Shifts).ToListAsync();
+        var workers = _context.Workers;
+        var result = await workers.Select(w => new WorkerDto
+        {
+            Id = w.Id,
+            Name = w.Name
+        }).ToListAsync();
+        return result;
+    } //DONE
+
+    public async Task<WorkerWithShiftsDto?> GetWorkerWithShiftsAsync(int id)
+    {
+        var worker = _context.Workers.Include(w => w.Shifts).Where(w => w.Id == id);
+        var shifts = await _shiftService.GetShiftsByWorkerIdAsync(id);
+        
+
+        var result = worker.Select(w => new WorkerWithShiftsDto
+        {
+            WorkerId = w.Id,
+            Name = w.Name,
+            Shifts = shifts ?? new List<ShiftDto>()
+        }).SingleOrDefault();
+
+        return result;
     }
 
-    public async Task<Worker?> GetWorkerByIdAsync(int id)
+    public async Task<WorkerDto?> GetWorkerByIdAsync(int id)
     {
-        return await _context.Workers.FindAsync(id);
-    }
-
-    public async Task<Worker?> UpdateWorkerAsync(int id, Worker updatedWorker)
-    {
-        var worker = await GetWorkerByIdAsync(id);
+        var worker =  await _context.Workers.FindAsync(id);
         if (worker is null)
         {
             return null;
         }
-        
-        _context.Entry(worker).CurrentValues.SetValues(updatedWorker);
+
+        WorkerDto workerDto = new()
+        {
+            Id = worker.Id,
+            Name = worker.Name
+        };
+        return workerDto;
+    }
+
+    public async Task<WorkerDto?> UpdateWorkerAsync(int id, string workerName)
+    {
+        var worker = await _context.Workers.FindAsync(id);
+        if (worker is null)
+        {
+            return null;
+        }
+        worker.Name = workerName;
         await _context.SaveChangesAsync();
-        return worker;
+        WorkerDto updatedWorker = new()
+        {
+            Id = worker.Id,
+            Name = worker.Name
+        };
+        return updatedWorker;
     }
 }

@@ -36,7 +36,7 @@ namespace ShiftsLogger.API.Migrations
                     b.Property<DateTimeOffset>("StartTime")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int>("WorkerId")
+                    b.Property<int?>("WorkerId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -68,8 +68,7 @@ namespace ShiftsLogger.API.Migrations
                     b.HasOne("ShiftsLogger.API.Models.Worker", "Worker")
                         .WithMany("Shifts")
                         .HasForeignKey("WorkerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Worker");
                 });
