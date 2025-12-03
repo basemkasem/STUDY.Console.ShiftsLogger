@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShiftsLogger.API.Models;
-using ShiftsLogger.API.Models.DTOs;
+using ShiftsLogger.API.Models.DTOs.Worker;
 using ShiftsLogger.API.Services;
 
 namespace ShiftsLogger.API.Controllers;
@@ -16,19 +16,18 @@ public class WorkerController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Worker>> AddWorker(WorkerDto workerDto)
+    public async Task<ActionResult<WorkerDto>> AddWorker(string name)
     {
-        Worker worker = new()
+        var worker = await _workerService.AddWorkerAsync(name);
+        if (worker is null)
         {
-            Name = workerDto.Name,
-        }; 
-
-        await _workerService.AddWorkerAsync(worker);
-        return CreatedAtAction(nameof(GetWorkerById), new {id = worker.Id} ,worker);
+            return BadRequest("Could not create worker.");
+        }
+        return CreatedAtAction(nameof(GetWorkerById), new { id = worker.Id }, worker);
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<Worker>> GetWorkerById(int id)
+    public async Task<ActionResult<WorkerDto>> GetWorkerById(int id)
     {
         var worker = await _workerService.GetWorkerByIdAsync(id);
         if (worker is null)
@@ -39,26 +38,41 @@ public class WorkerController : ControllerBase
         return Ok(worker);
     }
 
+    [HttpGet("{id}/Details")]
+    public async Task<ActionResult<WorkerWithShiftsDto>> GetWorkerWithShiftsById(int id)
+    {
+        var worker = await _workerService.GetWorkerWithShiftsAsync(id);
+        if (worker is null)
+        { 
+            return NotFound();
+        }
+
+        return Ok(worker);
+    }
+
+
     [HttpGet]
-    public async Task<ActionResult<List<Worker>>> GetAllWorkers()
+    public async Task<ActionResult<List<WorkerDto>>> GetAllWorkers()
     {
         return Ok(await _workerService.GetAllWorkersAsync());
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<Worker>> UpdateWorker(int id, WorkerDto workerDto)
+    public async Task<ActionResult<Worker>> UpdateWorker(int id, string workerName)
     {
-        Worker worker = await _workerService.GetWorkerByIdAsync(id);
+        var worker = await _workerService.GetWorkerByIdAsync(id);
         if (worker is null)
         {
             return NotFound();
         }
-
-        worker.Name = workerDto.Name;
-        await _workerService.UpdateWorkerAsync(id, worker);
+        var updatedWorker = await _workerService.UpdateWorkerAsync(id, workerName);
+        if (updatedWorker is null)
+        {
+            return BadRequest("Can't update the worker!");
+        }
         return Ok(worker);
     }
-    
+
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteWorker(int id)
     {
