@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using ShiftsLogger.API.Data;
 using ShiftsLogger.API.Services;
 
@@ -33,11 +33,12 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 
     app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        //c.SwaggerEndpoint("/swagger/v1/swagger.json", "ShiftsLogger API v1");
-        //c.RoutePrefix = string.Empty; 
-    });
+    app.UseSwaggerUI();
+    //     c =>
+    // {
+    //     c.SwaggerEndpoint("/swagger/v1/swagger.json", "ShiftsLogger API v1");
+    //     c.RoutePrefix = string.Empty; 
+    // }
 }
 
 app.UseHttpsRedirection();
