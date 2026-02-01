@@ -70,7 +70,7 @@ public class WorkerController : ControllerBase
         {
             return BadRequest("Can't update the worker!");
         }
-        return Ok(worker);
+        return Ok(updatedWorker);
     }
 
     [HttpDelete("{id}")]
