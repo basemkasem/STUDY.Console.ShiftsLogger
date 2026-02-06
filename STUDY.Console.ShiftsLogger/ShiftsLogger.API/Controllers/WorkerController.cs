@@ -16,9 +16,9 @@ public class WorkerController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<WorkerDto>> AddWorker(string name)
+    public async Task<ActionResult<WorkerDto>> AddWorker(WorkerCreationDto workerDto)
     {
-        var worker = await _workerService.AddWorkerAsync(name);
+        var worker = await _workerService.AddWorkerAsync(workerDto);
         if (worker is null)
         {
             return BadRequest("Could not create worker.");

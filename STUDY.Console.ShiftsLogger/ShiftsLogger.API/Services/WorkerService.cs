@@ -8,7 +8,7 @@ namespace ShiftsLogger.API.Services;
 
 public interface IWorkerService
 {
-    Task<WorkerDto?> AddWorkerAsync(string workerName);
+    Task<WorkerDto?> AddWorkerAsync(WorkerCreationDto workerCreationDtoDto);
     Task<WorkerDto?> GetWorkerByIdAsync(int id);
     Task<WorkerDto?> UpdateWorkerAsync(int id, string workerName);
     Task<bool> DeleteWorkerAsync(int id);
@@ -24,18 +24,18 @@ public class WorkerService : IWorkerService
         _context = context;
         _shiftService = shiftService;
     }
-    public async Task<WorkerDto?> AddWorkerAsync(string workerName)
+    public async Task<WorkerDto?> AddWorkerAsync(WorkerCreationDto workerCreationDtoDto)
     {
-        if (string.IsNullOrWhiteSpace(workerName))
+        if (string.IsNullOrWhiteSpace(workerCreationDtoDto.Name))
         {
             return null;
         }
 
         Worker worker = new()
         {
-            Name = workerName
+            Name = workerCreationDtoDto.Name
         };
-        _context.Workers.Add(worker);
+        await _context.Workers.AddAsync(worker);
         await _context.SaveChangesAsync();
         WorkerDto workerDto = new()
         {
