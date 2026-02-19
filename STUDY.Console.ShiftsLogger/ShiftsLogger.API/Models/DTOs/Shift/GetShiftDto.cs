@@ -1,4 +1,4 @@
-﻿namespace ShiftsLogger.API.Models.DTOs.shift;
+﻿namespace ShiftsLogger.API.Models.DTOs.Shift;
 
 public class GetShiftDto
 {

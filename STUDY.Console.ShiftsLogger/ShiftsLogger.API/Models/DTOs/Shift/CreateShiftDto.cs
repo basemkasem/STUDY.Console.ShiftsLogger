@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ShiftsLogger.API.Models.DTOs.shift;
+namespace ShiftsLogger.API.Models.DTOs.Shift;
 
 public class CreateShiftDto
 {

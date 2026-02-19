@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShiftsLogger.API.Data;
 using ShiftsLogger.API.Models;
-using ShiftsLogger.API.Models.DTOs.shift;
+using ShiftsLogger.API.Models.DTOs.Shift;
 using ShiftsLogger.API.Models.DTOs.Worker;
 
 namespace ShiftsLogger.API.Services;
@@ -50,7 +50,6 @@ public class WorkerService : IWorkerService
         {
             return false;
         }
-        //TODO: Set OnDelete to SetNull in DbContext
         _context.Workers.Remove(worker);
         await _context.SaveChangesAsync();
 

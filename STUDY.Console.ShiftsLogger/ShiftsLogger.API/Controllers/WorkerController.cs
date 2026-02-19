@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ShiftsLogger.API.Models;
 using ShiftsLogger.API.Models.DTOs.Worker;
 using ShiftsLogger.API.Services;
 
@@ -81,10 +80,8 @@ public class WorkerController : ControllerBase
         {
             return NoContent();
         }
-        else
-        {
-            return NotFound();
-        }
+
+        return NotFound();
     }
 
 

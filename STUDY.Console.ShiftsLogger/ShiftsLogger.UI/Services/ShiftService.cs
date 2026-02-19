@@ -14,7 +14,7 @@ public class ShiftService
     
     public async Task<IReadOnlyList<ShiftDto>?> GetShiftsByWorkerId(int id)
     {
-        var response = await HttpClient.GetFromJsonAsync<WorkerDetailsDTO>($"{Configuration.ApiUrl}/Worker/{id}/Details");
+        var response = await HttpClient.GetFromJsonAsync<WorkerDetailsDto>($"{Configuration.ApiUrl}/Worker/{id}/Details");
         if (response is null) return null;
         var workerShifts = response.Shifts;
         return workerShifts;

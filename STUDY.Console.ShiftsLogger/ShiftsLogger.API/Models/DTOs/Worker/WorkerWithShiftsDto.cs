@@ -1,4 +1,4 @@
-﻿using ShiftsLogger.API.Models.DTOs.shift;
+﻿using ShiftsLogger.API.Models.DTOs.Shift;
 
 namespace ShiftsLogger.API.Models.DTOs.Worker;
 

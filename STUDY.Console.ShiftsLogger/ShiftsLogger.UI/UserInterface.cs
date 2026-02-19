@@ -91,48 +91,4 @@ public class UserInterface
             }
         }
     }
-    
-    // private void ManageShifts()
-    // {
-    //     bool inShiftMenu = true;
-    //     while (inShiftMenu)
-    //     {
-    //         AnsiConsole.Clear();
-    //         var choice = AnsiConsole.Prompt(
-    //             new SelectionPrompt<string>()
-    //                 .Title("[yellow]Shift Management[/]")
-    //                 .AddChoices(new[] {
-    //                     "View All Shifts",
-    //                     "Add Shift",
-    //                     "Update Shift",
-    //                     "Delete Shift",
-    //                     "Back to Main Menu"
-    //                 }));
-    //
-    //         switch (choice)
-    //         {
-    //             case "View All Shifts":
-    //                 // _shiftService.GetAllShifts();
-    //                 break;
-    //             case "Add Shift":
-    //                 // _shiftService.AddShift();
-    //                 break;
-    //             case "Update Shift":
-    //                 // _shiftService.UpdateShift();
-    //                 break;
-    //             case "Delete Shift":
-    //                 // _shiftService.DeleteShift();
-    //                 break;
-    //             case "Back to Main Menu":
-    //                 inShiftMenu = false;
-    //                 break;
-    //         }
-    //
-    //         if (choice != "Back to Main Menu")
-    //         {
-    //             AnsiConsole.MarkupLine("\nPress any key to continue...");
-    //             Console.ReadKey(true);
-    //         }
-    //     }
-    // }
 }

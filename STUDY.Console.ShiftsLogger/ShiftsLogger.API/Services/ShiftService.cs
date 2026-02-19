@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShiftsLogger.API.Data;
 using ShiftsLogger.API.Models;
-using ShiftsLogger.API.Models.DTOs.shift;
+using ShiftsLogger.API.Models.DTOs.Shift;
 
 namespace ShiftsLogger.API.Services;
 
@@ -9,7 +9,6 @@ public interface IShiftService
 {
     Task<GetShiftDto?> AddShiftAsync(CreateShiftDto shiftDto);
     Task<GetShiftDto?> GetShiftByIdAsync(int id);
-    //public Task<List<Shift>> GetAllShiftsAsync();
     Task<GetShiftDto?> UpdateShiftAsync(int id, UpdateShiftDto updatedShift);
     Task<bool> RemoveShift(int id);
     Task<List<ShiftDto>?> GetShiftsByWorkerIdAsync(int id);

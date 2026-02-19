@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShiftsLogger.API.Models;
-using ShiftsLogger.API.Models.DTOs.shift;
+using ShiftsLogger.API.Models.DTOs.Shift;
 using ShiftsLogger.API.Services;
 
 namespace ShiftsLogger.API.Controllers;

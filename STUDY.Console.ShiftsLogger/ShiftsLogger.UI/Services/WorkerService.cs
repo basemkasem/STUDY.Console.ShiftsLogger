@@ -28,9 +28,9 @@ public class WorkerService
         var response = await _httpClient.PutAsJsonAsync($"{Configuration.ApiUrl}/Worker/{id}", new { Name = name } );
         return response.IsSuccessStatusCode;
     }
-    public async Task<WorkerDetailsDTO?> GetWorkerDetails(int id)
+    public async Task<WorkerDetailsDto?> GetWorkerDetails(int id)
     {
-        var response = await _httpClient.GetFromJsonAsync<WorkerDetailsDTO>($"{Configuration.ApiUrl}/Worker/{id}/Details");
+        var response = await _httpClient.GetFromJsonAsync<WorkerDetailsDto>($"{Configuration.ApiUrl}/Worker/{id}/Details");
         return response;
     }
 }
