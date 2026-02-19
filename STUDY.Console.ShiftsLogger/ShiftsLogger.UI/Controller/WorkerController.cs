@@ -133,8 +133,8 @@ public class WorkerController
                     int i = 1;
                     foreach (var shift in workerDetails.Shifts)
                     {
-                        table.AddRow($"{i++}", shift.StartTime.ToString(CultureInfo.InvariantCulture),
-                            shift.EndTime.ToString(CultureInfo.InvariantCulture));
+                        table.AddRow($"{i++}", shift.StartTime.ToString("yyyy-MM-dd hh:mm:ss tt"),
+                            shift.EndTime.ToString("yyyy-MM-dd hh:mm:ss tt"));
                     }
 
                     AnsiConsole.Write(table);
