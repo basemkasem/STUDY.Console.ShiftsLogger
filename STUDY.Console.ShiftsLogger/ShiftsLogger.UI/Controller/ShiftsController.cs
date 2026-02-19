@@ -17,7 +17,6 @@ public class ShiftsController
             DateTime endTime = default;
             while (!isValid)
             {
-                //TODO: Show valid Formats for user
                 startTime = AnsiConsole.Ask<DateTime>("Enter start time: ");
                 endTime = AnsiConsole.Ask<DateTime>("Enter end time: ");
                 if (endTime <= startTime)
