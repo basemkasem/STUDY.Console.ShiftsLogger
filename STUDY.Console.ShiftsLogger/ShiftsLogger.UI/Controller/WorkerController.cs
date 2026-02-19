@@ -120,7 +120,7 @@ public class WorkerController
                     return;
                 }
 
-                var table = new Table().AddColumns("No.", "Start Time", "End Time");
+                var table = new Table().AddColumns("No.", "Start Time", "End Time", "Duration");
                 List<string> choices = new List<string>();
                 if (workerDetails.Shifts.Count == 0)
                 {
@@ -133,8 +133,12 @@ public class WorkerController
                     int i = 1;
                     foreach (var shift in workerDetails.Shifts)
                     {
-                        table.AddRow($"{i++}", shift.StartTime.ToString("yyyy-MM-dd hh:mm:ss tt"),
-                            shift.EndTime.ToString("yyyy-MM-dd hh:mm:ss tt"));
+                        table.AddRow(
+                            $"{i++}",
+                            shift.StartTime.ToString("yyyy-MM-dd hh:mm:ss tt"),
+                            shift.EndTime.ToString("yyyy-MM-dd hh:mm:ss tt"),
+                            shift.EndTime.Subtract(shift.StartTime).ToString(@"hh\:mm\:ss", CultureInfo.InvariantCulture)
+                            );
                     }
 
                     AnsiConsole.Write(table);
